@@ -29,3 +29,12 @@ output/
 # Temp
 # ==============================================
 **/tmp/
+
+# Docker (repo git separe : roninlepoete/daw-ava-gpu)
+docker/
+
+# SoulX-Singer clone (trop lourd, telecharge a la demande)
+src/pipelines/svs/
+
+# Dataset ZIP (regenerable depuis sample-myVoice/)
+*.zip
