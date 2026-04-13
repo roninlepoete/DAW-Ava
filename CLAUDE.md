@@ -319,6 +319,19 @@ Grille tarifaire detaillee : `specs/FinOps/README.md`
   4. **Parametres reverb** : presents mais laisser les defauts (dry=0.8, wet=0.2) sauf demande explicite.
   5. **Tous les types verifies** : voir `specs/SVC/replicate/rvc-v2/params_inference.md` pour le schema complet.
 
+- **RunPod Serverless** — LECONS APPRISES (D69 + D31) :
+  1. **LIRE LA DOC OFFICIELLE AVANT DE CODER** : https://docs.runpod.io/serverless/workers/create-dockerfile
+  2. Base image officielle : `runpod/base:0.6.3-cuda11.8.0` (PAS python:3.11-slim)
+  3. CMD obligatoire : `python -u /handler.py` (le `-u` est CRITIQUE pour les logs)
+  4. Imports globaux (pas dans le handler) — sinon timeout et worker tue
+  5. Template officiel : https://github.com/runpod-workers/worker-template
+  6. Throttle = GPU pas dispo. Fix : plusieurs GPU en fallback + maxWorkers >= 3
+  7. Logs runtime : onglet Logs dans la console RunPod (pas juste Build logs)
+  8. **POST-MORTEM COMPLET** : `Docs/Architecture/WSG/Cloud GPU/RunPod-Bonnes-Pratiques.md`
+     Checklist pre-deploiement, anti-patterns, SDK reference, gestion throttle.
+     A LIRE OBLIGATOIREMENT avant tout nouveau deploiement RunPod (D80).
+  9. Skill WSG : `Core/Scripts/Skills/Python/runpod_skill/client.py` — health, purge, run_sync, reset
+
 ---
 
 ## SYNERGIES AVEC REMOTION/MIKHAELIZE
@@ -363,9 +376,21 @@ Le CLAUDE.md est la SOURCE DE VERITE pour l'execution operationnelle.
 
 ## ETAT DU PROJET
 
-**Statut** : Phase 1 en cours — stems operationnel (Demucs via Fal.ai).
-**Fait** : CLAUDE.md, package.json, tsconfig.json, .gitignore, structure repertoires, pipeline stems.
-**Prochaine etape** : Consolider les pipelines restants (master, sync, voice, sfx, music).
+**Statut** : Phase 1 en cours — stems + SVC + de-reverb operationnels. RunPod Serverless GPU deploye.
+**Fait** : CLAUDE.md, architecture, models/, specs/, FinOps, pipelines stems/voice/dereverb, RunPod Docker.
+**Prochaine etape** : Finaliser le pipeline SVS (SoulX-Singer V2 RunPod) + mastering.
+
+### REGLE DE LOOP — MISSION EN COURS (NON NEGOCIABLE)
+
+Quand une etape du pipeline est lancee (build, inference, test), Ava reste en **loop de mission** :
+- Poll le statut regulierement (RunPod health, build status, job progress)
+- Ne demande PAS "tu veux que je continue ?" — elle continue
+- Ne s'arrete PAS entre les etapes — elle enchaine
+- Signale les resultats au Cap'taine des qu'ils arrivent
+- Seul un **STOP explicite** du Cap'taine interrompt la loop
+
+C'est le meme principe que les Lettres d'Or de V2C : une fois le pipeline lance, Ava execute
+la chaine complete sans attendre de feu vert intermediaire.
 
 ---
 
