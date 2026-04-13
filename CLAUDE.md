@@ -329,8 +329,14 @@ Grille tarifaire detaillee : `specs/FinOps/README.md`
   7. Logs runtime : onglet Logs dans la console RunPod (pas juste Build logs)
   8. **POST-MORTEM COMPLET** : `Docs/Architecture/WSG/Cloud GPU/RunPod-Bonnes-Pratiques.md`
      Checklist pre-deploiement, anti-patterns, SDK reference, gestion throttle.
+     Procedure Pod SSH debug validee. Resultats SoulX-Singer SVC confirmes.
      A LIRE OBLIGATOIREMENT avant tout nouveau deploiement RunPod (D80).
   9. Skill WSG : `Core/Scripts/Skills/Python/runpod_skill/client.py` — health, purge, run_sync, reset
+  10. **REGLE POD-FIRST** : TOUJOURS tester sur un Pod SSH AVANT de deployer en Serverless.
+      Creer un Pod GPU, SSH dedans, installer manuellement, tester, PUIS ecrire le Dockerfile.
+      Ne JAMAIS deployer en Serverless sans avoir valide sur Pod d'abord.
+  11. **SoulX-Singer SVC valide sur Pod** (2026-04-13) : RTX A5000, 1m45s inference,
+      18 segments, prompt 30s max, generated.wav 14.6 Mo. Pret pour Dockerfile V2.
 
 ---
 
