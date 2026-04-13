@@ -1,0 +1,23 @@
+{
+  "name": "daw-ava",
+  "version": "0.1.0",
+  "description": "Compagnon IA audio — symbiose Cap'taine Fab + Ava",
+  "scripts": {
+    "stems": "npx tsx src/pipelines/stems/separate.ts",
+    "master": "npx tsx src/pipelines/master/auto-master.ts",
+    "sync": "npx tsx src/pipelines/sync/video-to-audio.ts",
+    "sfx": "npx tsx src/pipelines/sfx/generate.ts",
+    "voice": "npx tsx src/pipelines/voice/narrate.ts",
+    "music": "npx tsx src/pipelines/music/generate.ts"
+  },
+  "license": "UNLICENSED",
+  "dependencies": {
+    "@fal-ai/client": "1.9.1",
+    "dotenv": "17.3.1"
+  },
+  "devDependencies": {
+    "tsx": "^4.19.0",
+    "typescript": "^5.7.0",
+    "@types/node": "^22.0.0"
+  }
+}

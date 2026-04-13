@@ -1,0 +1,31 @@
+node_modules/
+dist/
+.env
+.env.local
+
+# ==============================================
+# MULTIMEDIA — IGNORER (trop lourd pour Git)
+# ==============================================
+# Audio (les sources et outputs sont locaux uniquement)
+*.mp3
+*.wav
+*.flac
+*.ogg
+*.aac
+*.m4a
+# Video (inputs sync audio-video)
+*.mp4
+*.webm
+*.mkv
+*.avi
+*.mov
+
+# ==============================================
+# OUTPUT — IGNORER (artefacts regenerables)
+# ==============================================
+output/
+
+# ==============================================
+# Temp
+# ==============================================
+**/tmp/
